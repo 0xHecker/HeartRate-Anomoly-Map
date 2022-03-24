@@ -1,0 +1,25 @@
+#mapContainer {
+  width: 60%;
+  height: 600px;
+  margin-left: 20%;
+  background: grey;
+}
+
+@media (max-width: 576px) {
+  #mapContainer {
+    width: 80%;
+    height: 500px;
+    margin-left: 12%;
+    background: grey;
+  }
+
+  .bigscreen {
+    display: none;
+  }
+}
+
+@media (min-width: 577px) {
+  .mobilecontainer {
+    display: none;
+  }
+}
