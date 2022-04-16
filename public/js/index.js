@@ -109,15 +109,12 @@ function init() {
     let icon;
     if (loc.status == "unresolved") {
       icon = dangerIcon;
-      console.log("unresolved dsdssd");
     }
     if (loc.status == "helpfound") {
       icon = warningIcon;
-      console.log("helpfound dsdssd");
     }
     if (loc.status == "resolved") {
       icon = safe;
-      console.log("resolved dsdssd");
     }
     addMarker(locArray[i].lat, locArray[i].lng, icon);
   }
