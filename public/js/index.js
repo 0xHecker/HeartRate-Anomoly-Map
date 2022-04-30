@@ -46,6 +46,7 @@ function addMarker(latitude, longitude, icon) {
   markers.push(marker);
   console.log(markers);
 }
+
 addMarker(13.5100139, 78.183098, dangerIcon);
 
 async function getData() {
@@ -64,7 +65,7 @@ async function getData() {
       status: status,
     });
   }
-  // console.log(locArray);
+  console.log(locArray);
 }
 
 async function addMarkersToMap() {
@@ -119,6 +120,7 @@ function init() {
     addMarker(locArray[i].lat, locArray[i].lng, icon);
   }
 }
+let interval = setInterval(getData, 5 * 60 * 1000);
 
 // Now use the map as required...
 addMarkersToMap();

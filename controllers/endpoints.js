@@ -91,11 +91,35 @@ exports.addAddress = async (req, res, next) => {
 
     const result = await datas.save();
 
-    let str = `${revsearch}?at=${result.location.coordinates[0]}%2C${result.location.coordinates[1]}&lang=en-US&apikey=${hereapikey}`;
+    let str = `${revsearch}?at=${result.location.coordinates[0]}%2C${result.location.coordinates[1]}&apiKey=${hereapikey}&lang=en`;
     console.log(str);
     let rest = await axios.get(str);
+    console.log(rest.data.items[0].title);
     console.log(rest.data.items[0].address);
 
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = require("twilio")(accountSid, authToken);
+
+    await client.messages
+      .create({
+        body: `
+You are my emergency contact. I need help.
+
+Device ID: ${result.deviceId}
+
+Last detected location of the device is: ${rest.data.items[0].address.label} , ${rest.data.items[0].address.city} , ${rest.data.items[0].address.postalCode}
+
+https://www.google.com/maps/place/${result.location.coordinates[0]},${result.location.coordinates[1]}
+
+You might need to check on this person, Remember that the person who needs help might not be able to return your call.
+
+You'll get this message when the person who added you as an emergency contact when the monitering device detects a heart rate anomaly it might be because they suddenly got panic too.
+        `,
+        from: "+19707038559",
+        to: "+919398824920",
+      })
+      .then((message) => console.log(message.sid));
     console.log(result);
     res.status(200).json({
       success: true,
@@ -124,10 +148,10 @@ function validate(req, res) {
 exports.update = async (req, res) => {
   const { id, status } = req.params;
   validate(req, res);
-  const data = await Data.findByIdAndUpdate(id, { helpStatus: status });
+  const data = await Data.findByIdAndUpdate(id, { helpStatus: status, name: 'Sai Shanmukh' });
   res.status(200).json({
     success: true,
     message: "Data updated successfully",
-    data: data,
+    data: data
   });
 };
